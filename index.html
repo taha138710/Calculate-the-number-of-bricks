@@ -9,7 +9,6 @@
         body {
             font-family: 'Tahoma', sans-serif;
             direction: rtl;
-            text-align: center;
             background: linear-gradient(135deg, #4CAF50, #2E7D32);
             color: #fff;
             margin: 0;
@@ -24,10 +23,9 @@
             background: rgba(255, 255, 255, 0.15);
             backdrop-filter: blur(10px);
             padding: 25px;
-            padding-left: 45px;
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            width: 350px;
+            width: 300px;
         }
 
         h2 {
@@ -42,26 +40,29 @@
             font-weight: bold;
         }
 
-        input {
-            width: 100%;
+        select, input {
+            width: 300px;
             padding: 10px;
             margin-bottom: 10px;
             border: none;
             border-radius: 5px;
             background: rgba(255, 255, 255, 0.2);
-            color: #fff;
+            color: #000000;
             outline: none;
             font-size: 16px;
         }
-
+        input{
+            width: 280px;
+        }
         input::placeholder {
             color: rgba(255, 255, 255, 0.7);
         }
+        select{
 
+        }
         button {
-            width: 100%;
+            width: 300px;
             padding: 12px;
-            margin-right: 10px;
             margin-top: 20px;
             background: #FFC107;
             color: #333;
@@ -89,29 +90,53 @@
 <body>
     <div class="container">
         <h2>محاسبه تعداد آجر</h2>
+
+        <label>انتخاب نوع آجر:</label>
+        <select id="brickType" onchange="setBrickSize()">
+            <option value="">-- انتخاب کنید --</option>
+            <option value="ajoorSefali">آجر سفالی</option>
+            <option value="ajoorLabi">آجر لابی</option>
+            <option value="ajoorFeshari">آجر فشاری</option>
+        </select>
+
         <label>طول دیوار (متر):</label>
-        <input type="number" id="wallLength" placeholder="مثلاً 4.5">
+        <input type="number" id="wallLength" placeholder="مثلاً 4.5" min="0">
 
         <label>ارتفاع دیوار (متر):</label>
-        <input type="number" id="wallHeight" placeholder="مثلاً 2.8">
+        <input type="number" id="wallHeight" placeholder="مثلاً 2.8" min="0">
 
         <label>ضخامت دیوار (متر):</label>
-        <input type="number" id="wallThickness" placeholder="مثلاً 0.3">
+        <input type="number" id="wallThickness" placeholder="مثلاً 0.3" min="0">
 
         <label>طول آجر (متر):</label>
-        <input type="number" id="brickLength" placeholder="مثلاً 0.2">
+        <input type="number" id="brickLength" placeholder="مثلاً 0.2" min="0">
 
         <label>عرض آجر (متر):</label>
-        <input type="number" id="brickWidth" placeholder="مثلاً 0.1">
+        <input type="number" id="brickWidth" placeholder="مثلاً 0.1" min="0">
 
         <label>ارتفاع آجر (متر):</label>
-        <input type="number" id="brickHeight" placeholder="مثلاً 0.07">
+        <input type="number" id="brickHeight" placeholder="مثلاً 0.07" min="0">
 
         <button onclick="calculateBricks()">محاسبه</button>
         <h3 id="result"></h3>
     </div>
 
     <script>
+        const brickSizes = {
+            ajoorSefali: { length: 0.2, width: 0.1, height: 0.07 },
+            ajoorLabi: { length: 0.22, width: 0.11, height: 0.06 },
+            ajoorFeshari: { length: 0.21, width: 0.10, height: 0.05 }
+        };
+
+        function setBrickSize() {
+            let selectedBrick = document.getElementById("brickType").value;
+            if (selectedBrick && brickSizes[selectedBrick]) {
+                document.getElementById("brickLength").value = brickSizes[selectedBrick].length;
+                document.getElementById("brickWidth").value = brickSizes[selectedBrick].width;
+                document.getElementById("brickHeight").value = brickSizes[selectedBrick].height;
+            }
+        }
+
         function calculateBricks() {
             let wallLength = parseFloat(document.getElementById("wallLength").value);
             let wallHeight = parseFloat(document.getElementById("wallHeight").value);
